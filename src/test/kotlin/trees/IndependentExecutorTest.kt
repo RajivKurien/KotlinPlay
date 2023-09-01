@@ -51,11 +51,12 @@ class IndependentExecutorTest {
         val child1 = Task.IncompleteTask(1, setOf(root))
         val child2 = Task.IncompleteTask(2, setOf(root, child1))
         val child3 = Task.IncompleteTask(3, setOf(child1, child2))
+        val child4 = Task.IncompleteTask(4, setOf(child1, child2, child3))
 
-        val completedTasks = underTest.execute(child3)
+        val completedTasks = underTest.execute(child4)
 
-        assertEquals(4, completedTasks.size)
-        repeat(4) {
+        assertEquals(5, completedTasks.size)
+        repeat(5) {
             assertEquals(it, completedTasks[it].id)
         }
     }

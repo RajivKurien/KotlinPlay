@@ -7,29 +7,29 @@ interface TaskExecutor {
 
 class IndependentExecutor : TaskExecutor {
 
-    private var completed: LinkedHashSet<Task.CompletedTask> = LinkedHashSet()
+    private val completedTasks: MutableMap<Int, Task.CompletedTask> = mutableMapOf()
 
     override fun execute(task: Task.IncompleteTask): List<Task.CompletedTask> {
-        return execute(task, completed)
-    }
-
-    private fun execute(task: Task.IncompleteTask, finished: Set<Task.CompletedTask>): List<Task.CompletedTask> {
-        val toRun = task.dependencies subtract finished subtract completed
-        val done = toRun.flatMap { t -> execute(t as Task.IncompleteTask, completed) }.toList() + task.run()
-
-        return completed.run {
-            addAll(done)
-            println("Completed=$this")
-            toList()
+        val todo = task.dependencies.filterNot { completedTasks.keys.contains(it.id) }
+        todo.map { t -> execute(t) }
+        return completedTasks.run {
+            put(task.id, task.run())
+            values.toList()
         }
     }
 }
 
 sealed class Task(open val id: Int) {
     data class CompletedTask(override val id: Int) : Task(id)
-    data class IncompleteTask(override val id: Int, val dependencies: Set<IncompleteTask>) : Task(id) {
+    data class IncompleteTask(
+        override val id: Int,
+        val dependencies: Set<IncompleteTask>,
+        var hasRun: Boolean = false
+    ) : Task(id) {
         fun run(): CompletedTask {
+            if (hasRun) throw Exception()
             println("Running task=${this@IncompleteTask.id}")
+            hasRun = true
             return CompletedTask(id)
         }
     }

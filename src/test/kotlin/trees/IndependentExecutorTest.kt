@@ -42,8 +42,10 @@ class IndependentExecutorTest {
 
     @Test
     fun `runs more tasks only once`() {
-//          T3
-//        /    \
+//          T4
+//        / |  \
+//       /  T3  \
+//       |/    \|
 //       T1 -> T2
 //        \    /
 //          T0

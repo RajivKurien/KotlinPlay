@@ -23,6 +23,11 @@ class BinaryTreeTest {
         assertEquals(listOf(0, 3, 5, 4, 7, 6, 1), result)
     }
 
+    @Test
+    fun `bottom most element`() {
+        val bottom = binaryTree.bottom()
+        assertEquals(BinaryNode(7), bottom)
+    }
 
     val binaryTree = BinaryNode(
         id = 1,

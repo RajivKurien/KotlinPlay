@@ -3,6 +3,15 @@ package trees
 data class Node(val id: Int, val children: List<Node>)
 data class BinaryNode(val id: Int, val left: BinaryNode?, val right: BinaryNode?) {
     constructor(id: Int) : this(id, null, null)
+
+    fun insert(node: BinaryNode): BinaryNode {
+        TODO()
+    }
+
+    fun bottom(): BinaryNode {
+        return right?.bottom() ?: this
+    }
+
 }
 
 fun inOrderTraversal(node: BinaryNode?): List<Int> = mutableListOf<Int>().apply {

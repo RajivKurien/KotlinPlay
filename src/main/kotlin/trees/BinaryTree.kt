@@ -1,6 +1,6 @@
 package trees
 
-import java.util.*
+import java.util.Queue
 import java.util.concurrent.LinkedBlockingQueue
 
 data class Graph(val nodes: Set<Node>)

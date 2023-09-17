@@ -2,6 +2,8 @@ package trees
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class GraphTest {
 
@@ -35,6 +37,24 @@ class GraphTest {
         val result = graph.breadthFirstSearch()
 
         assertEquals(listOf(0, 1, 4, 5, 3, 2), result)
+    }
+
+    @Test
+    fun `does route exist between two nodes case1`() {
+        buildExample1Graph()
+        assertTrue(routeExistsBetweenNodes(node0, node3))
+    }
+
+    @Test
+    fun `does route exist between two nodes case2`() {
+        buildExample1Graph()
+        assertTrue(routeExistsBetweenNodes(node0, node2))
+    }
+
+    @Test
+    fun `does route exist between two nodes case3`() {
+        buildExample1Graph()
+        assertFalse(routeExistsBetweenNodes(node2, node5))
     }
 
     private fun buildExample1Graph() {

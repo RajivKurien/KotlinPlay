@@ -1,5 +1,6 @@
 package trees
 
+import java.util.Objects
 import java.util.Queue
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -8,7 +9,14 @@ class Node(
     val id: Int,
     val children: MutableSet<Node> = mutableSetOf(),
     var visited: Boolean = false
-)
+) {
+    override fun equals(other: Any?): Boolean = when (other) {
+        is Node -> other.id == id
+        else -> false
+    }
+
+    override fun hashCode(): Int = Objects.hash(this.id)
+}
 
 data class BinaryNode constructor(
     val id: Int,
@@ -78,3 +86,24 @@ fun Graph.breadthFirstSearch(): List<Int> {
 
     return search(LinkedBlockingQueue(nodes));
 }
+
+fun routeExistsBetweenNodes(one: Node, another: Node): Boolean {
+    fun bfsRouteExists(nodes: Set<Node>, target: Node): Boolean {
+        val queue = LinkedBlockingQueue(nodes)
+        while (queue.isNotEmpty()) {
+            queue.forEach {
+                if (it == target) return true
+                if (it.visited) queue.remove(it)
+                else {
+                    it.visited = true
+                    queue.addAll(it.children)
+                }
+            }
+        }
+        return false
+    }
+
+    // BFS starting from both nodes
+    return bfsRouteExists(one.children, target = another) or bfsRouteExists(another.children, target = one)
+}
+

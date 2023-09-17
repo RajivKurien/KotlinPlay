@@ -28,6 +28,30 @@ class BinaryTreeTest {
         assertEquals(BinaryNode(7), binaryTree.bottom())
     }
 
+    @Test
+    fun `minimum height binary search tree`() {
+        assertEquals(
+            BinaryNode(1, left = BinaryNode(0), right = BinaryNode(2)),
+            minimalTree((0..2).toList())
+        )
+
+        assertEquals(
+            BinaryNode(
+                5,
+                left = BinaryNode(
+                    2, left = BinaryNode(0, right = BinaryNode(1)),
+                    right = BinaryNode(3, right = BinaryNode(4))
+                ),
+                right = BinaryNode(
+                    8,
+                    left = BinaryNode(6, right = BinaryNode(7)),
+                    right = BinaryNode(9, right = BinaryNode(10))
+                )
+            ),
+            minimalTree((0..10).toList())
+        )
+    }
+
     private val binaryTree = BinaryNode(
         id = 1,
         left = BinaryNode(0),

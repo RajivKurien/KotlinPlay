@@ -40,4 +40,16 @@ fun postOrderTraversal(node: BinaryNode?): List<Int> = mutableListOf<Int>().appl
     }
 }
 
+fun minimalTree(elements: List<Int>): BinaryNode? {
+    fun createMinimalTree(start: Int, end: Int): BinaryNode? = if (end < start) null else {
+        val middle = (start + end) / 2
+        val node = BinaryNode(elements[middle])
+        node.left = createMinimalTree(start, middle - 1)
+        node.right = createMinimalTree(middle + 1, end)
+        node
+    }
+
+    return createMinimalTree(0, elements.lastIndex)
+}
+
 

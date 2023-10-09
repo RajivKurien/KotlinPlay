@@ -2,6 +2,8 @@ package trees
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class BinaryTreeTest {
 
@@ -63,6 +65,18 @@ class BinaryTreeTest {
         assertEquals(LLNode(3, LLNode(5)), resultMap1[3])
 
         assertEquals(resultMap1, recursiveListByDepth(binaryTree))
+    }
+
+    @Test
+    fun `check binary tree is balanced`() {
+        assertFalse(binaryTree.isBalanced())
+        assertTrue(BinaryNode(5).isBalanced())
+        assertTrue(BinaryNode(5, BinaryNode(4), BinaryNode(3)).isBalanced())
+    }
+
+    @Test
+    fun `sub tree height`() {
+        assertEquals(4, binaryTree.height())
     }
 
     private val binaryTree = BinaryNode(

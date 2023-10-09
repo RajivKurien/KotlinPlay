@@ -1,6 +1,7 @@
 package trees
 
 import java.util.concurrent.LinkedBlockingQueue
+import kotlin.math.abs
 
 data class LLNode(
     val id: Int,
@@ -61,8 +62,8 @@ fun minimalTree(elements: List<Int>): BinaryNode? {
 }
 
 fun listByDepth(root: BinaryNode): Map<Int, LLNode> {
-    val queue = LinkedBlockingQueue(mutableListOf(Pair(0, root)))
-    val result = mutableMapOf<Int, LLNode>()
+    val queue = LinkedBlockingQueue(listOf(Pair(0, root)))
+    var result = mapOf<Int, LLNode>()
 
     while (queue.isNotEmpty()) {
         val depthAndNode = queue.remove()
@@ -73,16 +74,9 @@ fun listByDepth(root: BinaryNode): Map<Int, LLNode> {
             queue.put(Pair(depthAndNode.first + 1, this))
         }
 
-        result.compute(depthAndNode.first) { _, node ->
-            val next = LLNode(depthAndNode.second.id)
-            when (node) {
-                null -> next
-                else -> {
-                    node.next = next;
-                    node
-                }
-            }
-        }
+        val next = LLNode(depthAndNode.second.id)
+        if (result.containsKey(depthAndNode.first)) result[depthAndNode.first]!!.next = next
+        else result = result + Pair(depthAndNode.first, next)
     }
 
     return result
@@ -106,5 +100,14 @@ fun recursiveListByDepth(root: BinaryNode): Map<Int, LLNode> {
 
     return mutableMapOf<Int, LLNode>().apply { levelList(root, this, depth = 0) }
 }
+
+fun BinaryNode.height(): Int =
+    if (right == null && left == null) 1
+    else maxOf(
+        left?.run { height() + 1 } ?: 0,
+        right?.run { height() + 1 } ?: 0
+    )
+
+fun BinaryNode.isBalanced(): Boolean = abs((left?.height() ?: 0) - (right?.height() ?: 0)) <= 1
 
 

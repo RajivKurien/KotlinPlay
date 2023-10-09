@@ -52,6 +52,17 @@ class BinaryTreeTest {
         )
     }
 
+    @Test
+    fun `list of nodes at each depth`() {
+        val resultMap = listByDepth(binaryTree)
+
+        assertEquals(4, resultMap.keys.size)
+        assertEquals(LLNode(1), resultMap[0])
+        assertEquals(LLNode(0, LLNode(6)), resultMap[1])
+        assertEquals(LLNode(4, LLNode(7)), resultMap[2])
+        assertEquals(LLNode(3, LLNode(5)), resultMap[3])
+    }
+
     private val binaryTree = BinaryNode(
         id = 1,
         left = BinaryNode(0),

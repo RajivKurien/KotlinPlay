@@ -88,4 +88,23 @@ fun listByDepth(root: BinaryNode): Map<Int, LLNode> {
     return result
 }
 
+fun recursiveListByDepth(root: BinaryNode): Map<Int, LLNode> {
+    fun levelList(root: BinaryNode, map: MutableMap<Int, LLNode>, depth: Int) {
+        map.compute(depth) { _, node ->
+            val llNode = LLNode(root.id)
+            when (node) {
+                null -> llNode
+                else -> {
+                    node.next = llNode
+                    node
+                }
+            }
+        }
+        root.left?.apply { levelList(this, map, depth + 1) }
+        root.right?.apply { levelList(this, map, depth + 1) }
+    }
+
+    return mutableMapOf<Int, LLNode>().apply { levelList(root, this, depth = 0) }
+}
+
 
